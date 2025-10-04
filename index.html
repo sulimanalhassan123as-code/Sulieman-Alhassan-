@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhikr Counter</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2E7D32"/>
+</head>
+<body>
+
+    <!-- Setup Screen -->
+    <div id="setup-screen" class="screen active">
+        <header>
+            <h1>Dhikr Counter</h1>
+            <button id="dark-mode-toggle">🌙</button>
+        </header>
+        <main>
+            <h2>Choose your dhikr:</h2>
+            <div class="preset-buttons">
+                <button class="preset-btn" data-target="33" data-text="SubhanAllah (33)">SubhanAllah (33)</button>
+                <button class="preset-btn" data-target="33" data-text="Alhamdulillah (33)">Alhamdulillah (33)</button>
+                <button class="preset-btn" data-target="34" data-text="Allahu Akbar (34)">Allahu Akbar (34)</button>
+                <button class="preset-btn" data-target="100" data-text="Astaghfirullah (100)">Astaghfirullah (100)</button>
+            </div>
+            
+            <h2>Or set a custom target:</h2>
+            <div class="custom-target">
+                <input type="number" id="custom-target-input" placeholder="e.g., 500">
+                <button id="use-custom-btn">Start Custom</button>
+            </div>
+        </main>
+        <footer>
+            <p>Created by Suleiman Alhassan</p>
+        </footer>
+    </div>
+
+    <!-- Counter Screen -->
+    <div id="counter-screen" class="screen">
+        <div class="counter-header">
+            <button id="reset-btn">← Back</button>
+            <p id="current-dhikr-text"></p>
+        </div>
+        <div id="tap-area">
+            <p id="count-display">0</p>
+            <p id="target-display">/ 100</p>
+        </div>
+        <div class="counter-footer">
+             <button id="manual-reset-btn">Reset Count</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
