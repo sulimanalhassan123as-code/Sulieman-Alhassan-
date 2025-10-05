@@ -1,12 +1,13 @@
-const CACHE_NAME = 'dhikr-counter-v1';
+const REPO_NAME = '/Allah-is-one'; // This is the magic part
+const CACHE_NAME = 'dhikr-counter-v2'; // Note: Changed to v2 to force an update
 const urlsToCache = [
-  '/',
-  'index.html',
-  'style.css',
-  'script.js',
-  'manifest.json',
-  'icon-192.png',
-  'icon-512.png'
+  `${REPO_NAME}/`,
+  `${REPO_NAME}/index.html`,
+  `${REPO_NAME}/style.css`,
+  `${REPO_NAME}/script.js`,
+  `${REPO_NAME}/manifest.json`,
+  `${REPO_NAME}/icon-192.png`,
+  `${REPO_NAME}/icon-512.png`
 ];
 
 // Install the service worker and cache all the app's files
@@ -34,4 +35,20 @@ self.addEventListener('fetch', event => {
       }
     )
   );
+});
+
+// Clean up old caches
+self.addEventListener('activate', event => {
+    const cacheWhitelist = [CACHE_NAME];
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
 });
