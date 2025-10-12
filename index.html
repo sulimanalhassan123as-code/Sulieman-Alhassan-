@@ -5,8 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dhikr Counter</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- ✅ PWA Setup -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2E7D32"/>
+    <meta name="theme-color" content="#2E7D32">
+    <meta name="description" content="A simple and beautiful Dhikr Counter by Suleiman Alhassan.">
+    <link rel="icon" href="icon-192.png" type="image/png">
+
+    <script>
+        // ✅ Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                .then(() => console.log('✅ Service Worker registered successfully'))
+                .catch(err => console.log('❌ Service Worker registration failed:', err));
+            });
+        }
+    </script>
 </head>
 <body>
 
@@ -32,7 +47,7 @@
             </div>
         </main>
         <footer>
-            <p>Created by Suleiman Alhassan</p>
+            <p>Created by <strong>Suleiman Alhassan</strong></p>
         </footer>
     </div>
 
@@ -47,10 +62,10 @@
             <p id="target-display">/ 100</p>
         </div>
         <div class="counter-footer">
-             <button id="manual-reset-btn">Reset Count</button>
+            <button id="manual-reset-btn">Reset Count</button>
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
-</html>
+                </html>
