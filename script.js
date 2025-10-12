@@ -1,4 +1,6 @@
+// ================================
 // Register the Service Worker for offline functionality
+// ================================
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
         .then(registration => {
@@ -8,7 +10,50 @@ if ('serviceWorker' in navigator) {
         });
 }
 
-// Get all the elements we need from the HTML
+// ================================
+// Install prompt handling (PWA feature)
+// ================================
+let deferredPrompt;
+const installBtn = document.createElement('button');
+installBtn.textContent = '📱 Install App';
+installBtn.id = 'install-btn';
+installBtn.style.position = 'fixed';
+installBtn.style.bottom = '20px';
+installBtn.style.right = '20px';
+installBtn.style.padding = '10px 20px';
+installBtn.style.borderRadius = '10px';
+installBtn.style.background = '#007bff';
+installBtn.style.color = '#fff';
+installBtn.style.fontWeight = 'bold';
+installBtn.style.border = 'none';
+installBtn.style.cursor = 'pointer';
+installBtn.style.zIndex = '9999';
+installBtn.style.display = 'none';
+document.body.appendChild(installBtn);
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'block';
+});
+
+installBtn.addEventListener('click', async () => {
+    installBtn.style.display = 'none';
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to install prompt: ${outcome}`);
+        deferredPrompt = null;
+    }
+});
+
+window.addEventListener('appinstalled', () => {
+    console.log('App successfully installed!');
+});
+
+// ================================
+// Dhikr Counter Logic (your original code)
+// ================================
 const setupScreen = document.getElementById('setup-screen');
 const counterScreen = document.getElementById('counter-screen');
 const darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -27,18 +72,14 @@ let targetCount = 100;
 let dhikrText = 'Default';
 
 // --- Functions ---
-
 function startCounter(target, text) {
     targetCount = target;
     dhikrText = text;
     currentCount = 0;
-    
     updateDisplay();
-    
     localStorage.setItem('dhikr_target', targetCount);
     localStorage.setItem('dhikr_text', dhikrText);
     localStorage.setItem('dhikr_count', currentCount);
-    
     setupScreen.classList.remove('active');
     counterScreen.classList.add('active');
 }
@@ -54,17 +95,13 @@ function handleTap() {
         currentCount++;
         updateDisplay();
         localStorage.setItem('dhikr_count', currentCount);
-        
-        // Vibration feedback
+
         if (navigator.vibrate) {
-            navigator.vibrate(50); // Vibrate for 50 milliseconds
+            navigator.vibrate(50);
         }
-        
-        if (currentCount === targetCount) {
-            // Vibrate longer when target is reached
-            if (navigator.vibrate) {
-                navigator.vibrate([100, 50, 100]);
-            }
+
+        if (currentCount === targetCount && navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
         }
     }
 }
@@ -72,7 +109,6 @@ function handleTap() {
 function goBackToSetup() {
     counterScreen.classList.remove('active');
     setupScreen.classList.add('active');
-    // Clear saved state so we start fresh
     localStorage.removeItem('dhikr_target');
     localStorage.removeItem('dhikr_text');
     localStorage.removeItem('dhikr_count');
@@ -85,7 +121,6 @@ function resetCurrentCount() {
 }
 
 // --- Event Listeners ---
-
 presetButtons.forEach(button => {
     button.addEventListener('click', () => {
         const target = parseInt(button.dataset.target, 10);
@@ -117,8 +152,6 @@ darkModeToggle.addEventListener('click', () => {
 });
 
 // --- On Page Load ---
-
-// Check for saved progress
 const savedTarget = localStorage.getItem('dhikr_target');
 if (savedTarget) {
     targetCount = parseInt(savedTarget, 10);
@@ -129,9 +162,8 @@ if (savedTarget) {
     counterScreen.classList.add('active');
 }
 
-// Check for saved dark mode preference
 const savedDarkMode = localStorage.getItem('dhikr_dark_mode') === 'true';
 if (savedDarkMode) {
     document.body.classList.add('dark-mode');
     darkModeToggle.textContent = '☀️';
-}
+    }
