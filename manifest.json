@@ -1,11 +1,11 @@
 {
   "name": "Dhikr Counter",
   "short_name": "Dhikr",
-  "description": "A simple, offline-first counter for your daily dhikr.",
-  "start_url": ".",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#F0F4F0",
+  "background_color": "#ffffff",
   "theme_color": "#2E7D32",
+  "description": "A simple offline Dhikr Counter app by Suleiman Alhassan.",
   "icons": [
     {
       "src": "icon-192.png",
@@ -18,45 +18,4 @@
       "type": "image/png"
     }
   ]
-}```
-
-#### 5. The Service Worker File: `sw.js`
-This is the magic file that makes your app work offline.
-
-```javascript
-const CACHE_NAME = 'dhikr-counter-v1';
-const urlsToCache = [
-  '/',
-  'index.html',
-  'style.css',
-  'script.js',
-  'manifest.json',
-  'icon-192.png',
-  'icon-512.png'
-];
-
-// Install the service worker and cache all the files
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
-  );
-});
-
-// Fetch files from cache if available, otherwise from the network
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
-  );
-});
+}
